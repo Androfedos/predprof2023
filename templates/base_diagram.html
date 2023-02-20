@@ -1,5 +1,8 @@
 {% extends 'base.html' %}
 {% block tableswitch %}
+<script type="text/javascript">
+    tm = 1000*{{ tm }};
+</script>
 <span id="tablebox">
     Таблица
     <input id="tableswitch" class="switch" type="checkbox">

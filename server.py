@@ -8,9 +8,12 @@ from pprint import pprint
 from statistics import mean
 import time
 import requests
+from datetime import datetime, timedelta
+
+DBFILE = 'database.db'
 
 def get_db_connection():
-    conn = sqlite3.connect('database.db')
+    conn = sqlite3.connect(DBFILE)
     # conn.row_factory = sqlite3.Row
     return conn
 
@@ -34,25 +37,24 @@ asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 def cur_air_temp():
     connection = get_db_connection()
     states = get_states(connection)
-    return render_template('current_air_temp.html', the_title="Текущая температура воздуха", minT=states['minT']) 
+    return render_template('current_air_temp.html', the_title="Текущая температура воздуха", minT=states['minT'], tm=states['tm']) 
 
 @app.route('/cur_air_hum')
 def cur_air_hum():
     connection = get_db_connection()
     states = get_states(connection)
-    return render_template('current_air_hum.html', the_title="Текущущая влажность воздуха", maxAH=states['maxAH']) 
+    return render_template('current_air_hum.html', the_title="Текущущая влажность воздуха", maxAH=states['maxAH'], tm=states['tm']) 
 
 @app.route('/cur_soil_hum')
 def cur_soil_hum():
     connection = get_db_connection()
     states = get_states(connection)
-    return render_template('current_soil_hum.html', the_title="Текущая влажность почвы", maxSH=states['maxSH']) 
+    return render_template('current_soil_hum.html', the_title="Текущая влажность почвы", maxSH=states['maxSH'], tm=states['tm']) 
 
 @app.route('/ajax/at/current')
 def at_current():
     connection = get_db_connection()
     counters = current_counters()
-    save(counters)
     at = slice_array(counters["ath"], "temperature")
     res = {}
     res['temperature'] = at
@@ -68,7 +70,6 @@ def at_current():
 def ah_current():
     connection = get_db_connection()
     counters = current_counters()
-    save(counters)
     ah = slice_array(counters["ath"], "humidity")
     res = {}
     res['humidity'] = ah
@@ -84,7 +85,6 @@ def ah_current():
 @app.route('/ajax/sh/current')
 def sh_current():
     counters = current_counters()
-    save(counters)
     sh = slice_array(counters["sh"], "humidity")
 
     res = {}
@@ -107,7 +107,7 @@ def settings():
     values = get_states(connection)
     if request.method == 'POST':
         cur = connection.cursor()
-        cur.execute(f"UPDATE States SET minT={request.form['minT']}, maxAH={request.form['maxAH']}, maxSH={request.form['maxSH']} WHERE id=1")
+        cur.execute(f"UPDATE States SET minT={request.form['minT']}, maxAH={request.form['maxAH']}, maxSH={request.form['maxSH']}, tm={request.form['tm']} WHERE id=1")
         connection.commit()
         connection.close()
         values = request.form
@@ -117,24 +117,29 @@ def settings():
 
 @app.route('/dynamics_at/<int:num>')
 def dynamics_at(num):
+    connection = get_db_connection()
+    states = get_states(connection)
     title = f"Динамика температуры воздуха датчика {num}" if num < 5 else "Динамика средней температуры воздуха"
-    return render_template('dynamics_at.html', the_title=title, the_num=num)
+    return render_template('dynamics_at.html', the_title=title, the_num=num, tm=states['tm'])
 
 @app.route('/dynamics_ah/<int:num>')
 def dynamics_ah(num):
+    connection = get_db_connection()
+    states = get_states(connection)
     title = f"Динамика влажности воздуха датчика {num}" if num < 5 else "Динамика средней влажности воздуха"
-    return render_template('dynamics_ah.html', the_title=title, the_num=num)
+    return render_template('dynamics_ah.html', the_title=title, the_num=num, tm=states['tm'])
 
 @app.route('/dynamics_sh/<int:num>')
 def dynamics_sh(num):
+    connection = get_db_connection()
+    states = get_states(connection)
     title = f"Динамика влажности почвы датчика {num}" if num < 7 else "Динамика среднего"
-    return render_template('dynamics_sh.html', the_title=title, the_num=num)
+    return render_template('dynamics_sh.html', the_title=title, the_num=num, tm=states['tm'])
 
 
 @app.route('/ajax/at/<int:num>')
 def data_at(num):
     counters = current_counters()
-    save(counters)
     connection = get_db_connection()
     cur = connection.cursor()
     fld = f"temp{num}" if num < 4 else "temp_aver"
@@ -145,7 +150,6 @@ def data_at(num):
 @app.route('/ajax/ah/<int:num>')
 def data_ah(num):
     counters = current_counters()
-    save(counters)
     connection = get_db_connection()
     cur = connection.cursor()
     fld = f"hum{num}" if num < 4 else "hum_aver"
@@ -156,7 +160,6 @@ def data_ah(num):
 @app.route('/ajax/sh/<int:num>')
 def data_sh(num):
     counters = current_counters()
-    save(counters)
     connection = get_db_connection()
     cur = connection.cursor()
     fld = f"soilhum{num}" if num < 7 else "soilhum_aver"
@@ -341,6 +344,38 @@ def current_counters():
     }
     '''
 
+    #Если пследняя строки таблицы счетчиков создана менее сек назад , чем период запроса (из настроек), 
+    #то запрос к APT не делаем, а возвращем строку из базы. Таким образом несколько подключенных клиентов
+    #не будут слишком часто дергать API
+    connection = get_db_connection()
+    #connection = sqlite3.connect(DBFILE, detect_types=sqlite3.PARSE_DECLTYPES)
+    cur = connection.cursor()
+    res = cur.execute(f"SELECT datetime(created, 'localtime') FROM Counters ORDER BY rowid DESC LIMIT 1;").fetchone()
+    if res:
+        last_datetime = datetime.strptime(res[0], '%Y-%m-%d %H:%M:%S')
+        now = datetime.now()
+        tmdelta = now - last_datetime
+        states = get_states(connection)
+        totsec = tmdelta.total_seconds()
+        if totsec < states['tm']:
+            res = cur.execute(f"SELECT * FROM Counters ORDER BY rowid DESC LIMIT 1;").fetchone()
+            connection.close()
+            result = {}
+            result['ath'] = []
+            for i in range(0,4):
+                result["ath"].append({'humidity': res[2+i], 'id': i+1, 'temperature': res[7+i]});
+            result["ath"].append({'humidity': res[6], 'id': 'average', 'temperature': res[11]});
+
+            result['sh'] = []
+            for i in range(0,6):
+                result["sh"].append({'humidity': res[12+i], 'id': i+1});
+            result["sh"].append({'humidity': res[18], 'id': 'average'});
+            print("From cache")
+            return result
+
+    connection.close()
+
+
     start_timestamp = time.time()
     result = asyncio.run(async_req())
     task_time = round(time.time() - start_timestamp, 2)
@@ -357,9 +392,11 @@ def current_counters():
     hum_avg = round(mean(hums),2)
     result["sh"].append({'humidity': hum_avg, 'id': 'average'});
 
+    save(result)
+
     # pprint(result)
     return result
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host="0.0.0.0")

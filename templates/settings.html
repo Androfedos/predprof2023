@@ -4,11 +4,13 @@
 <form action="" method='post'>
   <dl>
     <dt>Мин допустимая температура для открытия окон:</dt>
-    <dd><input type="number" style="width: 4em" id="minT" name='minT' value="{{ values['minT'] }}" step="0.2"></dd>
+    <dd><input type="number" style="width: 4em" id="minT" name='minT' value="{{ values['minT'] }}" step="0.2"> град</dd>
     <dt>Макс допустимая влажность воздуха для запуска увлажнения:</dt>
-    <dd><input type="number" style="width: 4em" id="maxAH" name='maxAH' value="{{ values['maxAH'] }}" step="0.2"></dd>
+    <dd><input type="number" style="width: 4em" id="maxAH" name='maxAH' value="{{ values['maxAH'] }}" step="0.2"> %</dd>
     <dt>Макс допустимая влажность почвы для полива:</dt>
-    <dd><input type="number" style="width: 4em" id="maxSH" name='maxSH' value="{{ values['maxSH'] }}" step="0.2">:</dd>
+    <dd><input type="number" style="width: 4em" id="maxSH" name='maxSH' value="{{ values['maxSH'] }}" step="0.2"> %</dd>
+    <dt>Частота обновления данных:</dt>
+    <dd><input type="number" style="width: 4em" id="tm" name='tm' value="{{ values['tm'] }}" step="1" min="1"> сек</dd>
   </dl>
   <input type='submit' value="Сохранить">
 </form>

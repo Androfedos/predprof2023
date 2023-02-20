@@ -137,3 +137,8 @@ input.switch {
     position: relative;
     left: 145px;
 }
+
+form dl dt {
+    margin-top: 20px;
+    margin-bottom: 10px;
+}

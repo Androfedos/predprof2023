@@ -125,7 +125,7 @@ function updateDinamicsSH(num)
 
 function drawAirHumChart(inp)   {
     if (table_view){
-      var html = '<table class="tbl"><thead><tr><td>Датичик</td><td>Влажность</td></tr></thead><tbody>';
+      var html = '<table class="tbl"><thead><tr><td>Датчик</td><td>Влажность</td></tr></thead><tbody>';
       for (var i = 0, len = inp.length; i < len; ++i) {
           html += '<tr>';
           if (i < 4) 
@@ -180,7 +180,7 @@ function drawAirHumChart(inp)   {
   
   function drawAirTempChart(inp){
     if (table_view){
-      var html = '<table class="tbl"><thead><tr><td>Датичик</td><td>Температура</td></tr></thead><tbody>';
+      var html = '<table class="tbl"><thead><tr><td>Датчик</td><td>Температура</td></tr></thead><tbody>';
       for (var i = 0, len = inp.length; i < len; ++i) {
           html += '<tr>';
           if (i < 4) 
@@ -233,7 +233,7 @@ function drawAirHumChart(inp)   {
 
   function drawSoilHumChart(inp){
     if (table_view){
-      var html = '<table class="tbl"><thead><tr><td>Датичик</td><td>Влажность</td></tr></thead><tbody>';
+      var html = '<table class="tbl"><thead><tr><td>Датчик</td><td>Влажность</td></tr></thead><tbody>';
       for (var i = 0, len = inp.length; i < len; ++i) {
           html += '<tr>';
           if (i < 6) 
