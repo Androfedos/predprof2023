@@ -1,0 +1,19 @@
+{% extends 'base_diagram.html' %}
+{% block body %}
+<script type="text/javascript">
+  $(document).ready(function(){
+    google.charts.load("current", {packages:['corechart']});
+    num = {{ the_num }};
+    $("#tableswitch").click(function(){
+      table_view = !table_view;
+      var arr = [['Время', 'Влажность']];
+        var title = (num<=4) ? ("Динамика влажности воздуха датчика " + num.toString()): "Динамика средней влажности воздуха";
+        drawDynChart(num, arr, title, g_data)
+    })
+    updateDinamicsAH(num);
+  });
+</script>
+
+<div id="chart" ><div class="downloading"><img src="/static/img/loading.gif"  width="400" height="400"></div></div>
+
+{% endblock %}

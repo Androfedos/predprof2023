@@ -1,0 +1,19 @@
+{% extends 'base_diagram.html' %}
+{% block body %}
+<script type="text/javascript">
+  $(document).ready(function(){
+    google.charts.load("current", {packages:['corechart']});
+    load_wnd();
+    $("#tableswitch").click(function(){
+      table_view = !table_view;
+      drawAirTempChart(g_data);
+    })
+    $("#window_button").click(function(){
+      on_window_button(this);
+    });     
+    updateAirTempChart();
+  });
+</script>
+<div id="ath_t_chart"><div class="downloading"><img src="/static/img/loading.gif"  width="400" height="400"></div></div>
+<button class = "mid_btn" id="window_button" disabled><img src="/static/img/closed_wnd.png" width="96" height="96">Открыть форточки</button>
+{% endblock %}

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{{ the_title }}</title>
+        <link rel="stylesheet", href="/static/style.css">
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <script type="text/javascript" src="/static/utils.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+    </head>
+    <body>
+        <div class="dropdown">
+            <button class="dropbtn"></button>
+            <div class="dropdown-content">
+                <a href="{{ url_for('cur_air_temp') }}">Температура воздуха</a>
+                <a href="{{ url_for('cur_air_hum') }}">Влажность воздуха</a>
+                <a href="{{ url_for('cur_soil_hum') }}">Влажность почвы</a>
+                <a href="{{ url_for('settings') }}">Настройки</a>
+            </div>
+        </div>
+        {% block tableswitch %}
+        {% endblock %}
+        {% block body %}
+        {% endblock %}
+    </body>
+</html>

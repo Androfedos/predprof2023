@@ -1,0 +1,21 @@
+{% extends 'base_diagram.html' %}
+{% block body %}
+<script type="text/javascript">
+  
+  $(document).ready(function(){
+    google.charts.load("current", {packages:['corechart']});
+    load_wetter();
+    $("#tableswitch").click(function(){
+      table_view = !table_view;
+      drawAirHumChart(g_data);
+    })
+    $("#wetter").click(function(){
+      on_wetter_button(this);
+    });
+    updateAirHumChart();
+  });
+</script>
+
+<div id="ath_h_chart" ><div class="downloading"><img src="/static/img/loading.gif"  width="400" height="400"></div></div>
+<button id="wetter" disabled><image src="/static/img/nowet.png">Включить увлажнитель</button>
+{% endblock %}

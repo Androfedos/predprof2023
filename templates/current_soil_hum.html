@@ -1,0 +1,45 @@
+{% extends 'base_diagram.html' %}
+{% block body %}
+<script type="text/javascript">
+  $(document).ready(function(){
+    google.charts.load("current", {packages:['corechart']});
+    loadWaterButtons();
+    $("#tableswitch").click(function(){
+      table_view = !table_view;
+      drawSoilHumChart(g_data);
+    })
+    $("#water_button1").click(function(){
+      water_button(this, 1);
+    });     
+    
+    $("#water_button2").click(function(){
+      water_button(this, 2);
+    });
+    $("#water_button3").click(function(){
+      water_button(this, 3);
+    });  
+    $("#water_button4").click(function(){
+      water_button(this, 4);
+    });  
+    $("#water_button5").click(function(){
+      water_button(this, 5);
+    });  
+    $("#water_button6").click(function(){
+      water_button(this, 6);
+    });       
+
+    updateSoilHumChart();
+  });
+</script>
+
+<div id="sh_chart"><div class="downloading"><img src="/static/img/loading.gif"  width="400" height="400"></div></div>
+<div id="water_panel">
+  <button class="water_button" id="water_button1"> <img src="/static/img/nowater.png" width="64" height="64"> Полив выключен </button>
+  <button class="water_button" id="water_button2"> <img src="/static/img/nowater.png" width="64" height="64"> Полив выключен </button>
+  <button class="water_button" id="water_button3"> <img src="/static/img/nowater.png" width="64" height="64"> Полив выключен </button>
+  <button class="water_button" id="water_button4"> <img src="/static/img/nowater.png" width="64" height="64"> Полив выключен </button>
+  <button class="water_button" id="water_button5"> <img src="/static/img/nowater.png" width="64" height="64"> Полив выключен </button>
+  <button class="water_button" id="water_button6"> <img src="/static/img/nowater.png" width="64" height="64"> Полив выключен </button>
+</div>
+
+{% endblock %}s
