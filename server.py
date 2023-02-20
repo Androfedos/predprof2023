@@ -32,15 +32,21 @@ asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 @app.route('/')
 @app.route('/cur_air_temp')
 def cur_air_temp():
-    return render_template('current_air_temp.html', the_title="Текущая температура воздуха") 
+    connection = get_db_connection()
+    states = get_states(connection)
+    return render_template('current_air_temp.html', the_title="Текущая температура воздуха", minT=states['minT']) 
 
 @app.route('/cur_air_hum')
 def cur_air_hum():
-    return render_template('current_air_hum.html', the_title="Текущущая влажность воздуха") 
+    connection = get_db_connection()
+    states = get_states(connection)
+    return render_template('current_air_hum.html', the_title="Текущущая влажность воздуха", maxAH=states['maxAH']) 
 
 @app.route('/cur_soil_hum')
 def cur_soil_hum():
-    return render_template('current_soil_hum.html', the_title="Текущая влажность почвы") 
+    connection = get_db_connection()
+    states = get_states(connection)
+    return render_template('current_soil_hum.html', the_title="Текущая влажность почвы", maxSH=states['maxSH']) 
 
 @app.route('/ajax/at/current')
 def at_current():
@@ -356,4 +362,4 @@ def current_counters():
 
 
 if __name__ == '__main__':
-    app.run(debug=False)
+    app.run(debug=True)

@@ -131,3 +131,9 @@ input.switch {
     position: relative;
     left: 400px;
 }
+
+.condition{
+    font-size: 20px;
+    position: relative;
+    left: 145px;
+}
