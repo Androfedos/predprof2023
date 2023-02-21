@@ -3,6 +3,7 @@
 <script type="text/javascript">
   $(document).ready(function(){
     google.charts.load("current", {packages:['corechart']});
+    google.charts.setOnLoadCallback(updateAirTempChart);
     load_wnd();
     $("#tableswitch").click(function(){
       table_view = !table_view;
@@ -11,13 +12,12 @@
     $("#window_button").click(function(){
       on_window_button(this);
     });     
-    updateAirTempChart();
   });
 </script>
 <div id="ath_t_chart"><div class="downloading"><img src="/static/img/loading.gif"  width="400" height="400"></div></div>
 <button class = "mid_btn" id="window_button" disabled><img src="/static/img/closed_wnd.png" width="96" height="96">Открыть форточки</button>
 <div class="condition">
-<p>Мин. средняя температура для проветривания {{ minT }} град. 
+<p>Мин. средняя температура для проветривания {{ states['minT'] }} град. 
 </div>
   
 {% endblock %}

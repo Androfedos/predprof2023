@@ -37,19 +37,19 @@ asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 def cur_air_temp():
     connection = get_db_connection()
     states = get_states(connection)
-    return render_template('current_air_temp.html', the_title="Текущая температура воздуха", minT=states['minT'], tm=states['tm']) 
+    return render_template('current_air_temp.html', the_title="Текущая температура воздуха", states=states) 
 
 @app.route('/cur_air_hum')
 def cur_air_hum():
     connection = get_db_connection()
     states = get_states(connection)
-    return render_template('current_air_hum.html', the_title="Текущущая влажность воздуха", maxAH=states['maxAH'], tm=states['tm']) 
+    return render_template('current_air_hum.html', the_title="Текущущая влажность воздуха", states=states) 
 
 @app.route('/cur_soil_hum')
 def cur_soil_hum():
     connection = get_db_connection()
     states = get_states(connection)
-    return render_template('current_soil_hum.html', the_title="Текущая влажность почвы", maxSH=states['maxSH'], tm=states['tm']) 
+    return render_template('current_soil_hum.html', the_title="Текущая влажность почвы", states=states) 
 
 @app.route('/ajax/at/current')
 def at_current():
@@ -107,7 +107,8 @@ def settings():
     values = get_states(connection)
     if request.method == 'POST':
         cur = connection.cursor()
-        cur.execute(f"UPDATE States SET minT={request.form['minT']}, maxAH={request.form['maxAH']}, maxSH={request.form['maxSH']}, tm={request.form['tm']} WHERE id=1")
+        extra = 1 if 'extra' in request.form and request.form['extra']=='on' else 0
+        cur.execute(f"UPDATE States SET minT={request.form['minT']}, maxAH={request.form['maxAH']}, maxSH={request.form['maxSH']}, tm={request.form['tm']}, extra={extra} WHERE id=1")
         connection.commit()
         connection.close()
         values = request.form
@@ -120,21 +121,21 @@ def dynamics_at(num):
     connection = get_db_connection()
     states = get_states(connection)
     title = f"Динамика температуры воздуха датчика {num}" if num < 5 else "Динамика средней температуры воздуха"
-    return render_template('dynamics_at.html', the_title=title, the_num=num, tm=states['tm'])
+    return render_template('dynamics_at.html', the_title=title, the_num=num, states=states)
 
 @app.route('/dynamics_ah/<int:num>')
 def dynamics_ah(num):
     connection = get_db_connection()
     states = get_states(connection)
     title = f"Динамика влажности воздуха датчика {num}" if num < 5 else "Динамика средней влажности воздуха"
-    return render_template('dynamics_ah.html', the_title=title, the_num=num, tm=states['tm'])
+    return render_template('dynamics_ah.html', the_title=title, the_num=num, states=states)
 
 @app.route('/dynamics_sh/<int:num>')
 def dynamics_sh(num):
     connection = get_db_connection()
     states = get_states(connection)
     title = f"Динамика влажности почвы датчика {num}" if num < 7 else "Динамика среднего"
-    return render_template('dynamics_sh.html', the_title=title, the_num=num, tm=states['tm'])
+    return render_template('dynamics_sh.html', the_title=title, the_num=num, states=states)
 
 
 @app.route('/ajax/at/<int:num>')

@@ -11,6 +11,10 @@
     <dd><input type="number" style="width: 4em" id="maxSH" name='maxSH' value="{{ values['maxSH'] }}" step="0.2"> %</dd>
     <dt>Частота обновления данных:</dt>
     <dd><input type="number" style="width: 4em" id="tm" name='tm' value="{{ values['tm'] }}" step="1" min="1"> сек</dd>
+    <dt><span id="extrabox">
+      Режим экстренного управления
+      <input class="switch" type="checkbox"  id="extra" name='extra' {% if values['extra'] %} checked {% endif %}>
+  </span></dt>
   </dl>
   <input type='submit' value="Сохранить">
 </form>

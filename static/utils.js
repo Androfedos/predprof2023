@@ -1,7 +1,7 @@
 var tm = 2000;
 var g_data;
 var table_view = false;
-
+var extra = false;
 
 function updateAirTempChart()
 {
@@ -363,7 +363,7 @@ function drawWaterButton(num, state, enabled){
   else{
     $("#water_button" + num).html('<img src="/static/img/nowater.png" width="64" height="64"> Полив выключен');
   }
-  if (enabled)
+  if (enabled || extra)
     $("#water_button" + num).removeAttr('disabled');
   else
     $("#water_button" + num).attr("disabled","disabled");
@@ -408,7 +408,7 @@ function drawWindow(state, enabled){
   else{
     $("#window_button").html('<img src="static/img/closed_wnd.png" width="96" height="96"> Открыть форточки');
   }
-  if (enabled)
+  if (enabled || extra)
     $("#window_button").removeAttr('disabled');
   else
     $("#window_button").attr("disabled","disabled");
@@ -454,7 +454,7 @@ function drawWet(state, enabled){
   else{
     $("#wetter").html('<img src="static/img/nowet.png">Включить увлажнитель');
   }
-  if (enabled)
+  if (enabled || extra)
     $("#wetter").removeAttr('disabled');
   else
     $("#wetter").attr("disabled","disabled");

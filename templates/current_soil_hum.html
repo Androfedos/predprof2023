@@ -3,6 +3,7 @@
 <script type="text/javascript">
   $(document).ready(function(){
     google.charts.load("current", {packages:['corechart']});
+    google.charts.setOnLoadCallback(updateSoilHumChart);
     loadWaterButtons();
     $("#tableswitch").click(function(){
       table_view = !table_view;
@@ -27,8 +28,6 @@
     $("#water_button6").click(function(){
       water_button(this, 6);
     });       
-
-    updateSoilHumChart();
   });
 </script>
 
@@ -42,7 +41,7 @@
   <button class="water_button" id="water_button6"> <img src="/static/img/nowater.png" width="64" height="64"> Полив выключен </button>
 </div>
 <div class="condition">
-<p>Макс. допустимая влажность почвы в бороздке для полива {{ maxSH }}%
+<p>Макс. допустимая влажность почвы в бороздке для полива {{ states['maxSH'] }}%
 </div>
 
 {% endblock %}s
