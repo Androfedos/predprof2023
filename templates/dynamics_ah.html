@@ -4,13 +4,13 @@
   $(document).ready(function(){
     google.charts.load("current", {packages:['corechart']});
     num = {{ the_num }};
+    google.charts.setOnLoadCallback(function(){updateDinamicsAH(num);});
     $("#tableswitch").click(function(){
       table_view = !table_view;
       var arr = [['Время', 'Влажность']];
         var title = (num<=4) ? ("Динамика влажности воздуха датчика " + num.toString()): "Динамика средней влажности воздуха";
         drawDynChart(num, arr, title, g_data)
     })
-    updateDinamicsAH(num);
   });
 </script>
 

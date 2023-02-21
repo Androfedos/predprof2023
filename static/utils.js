@@ -112,7 +112,7 @@ function updateDinamicsSH(num)
         success: function(data) {
           g_data = data
           var arr = [['Время', 'Влажность']];
-          var title = (num<=4) ? ("Динамика влажности почвы датчика " + num.toString()): "Динамика средней влажности почвы";
+          var title = (num<=6) ? ("Динамика влажности почвы датчика " + num.toString()): "Динамика средней влажности почвы";
           drawDynChart(num, arr, title, data)
         },
         complete: function (jqXHR, textStatus) {
@@ -124,8 +124,13 @@ function updateDinamicsSH(num)
 }
 
 function drawAirHumChart(inp)   {
+    if (!inp)
+      return
+
+    title = "Текущая влажность воздуха";
     if (table_view){
-      var html = '<table class="tbl"><thead><tr><td>Датчик</td><td>Влажность</td></tr></thead><tbody>';
+      var html = "<h3>"+title+"</h3>";
+      html += '<table class="tbl"><thead><tr><th>Датчик</th><th>Влажность</th></tr></thead><tbody>';
       for (var i = 0, len = inp.length; i < len; ++i) {
           html += '<tr>';
           if (i < 4) 
@@ -158,7 +163,7 @@ function drawAirHumChart(inp)   {
                         2]);
 
       var options = {
-        title: "Текущая влажность воздуха",
+        title: title,
         width: 800,
         height: 400,
         bar: {groupWidth: "75%"},
@@ -179,8 +184,13 @@ function drawAirHumChart(inp)   {
 }
   
   function drawAirTempChart(inp){
+    if (!inp)
+      return
+
+    title = "Текущая температура воздуха";
     if (table_view){
-      var html = '<table class="tbl"><thead><tr><td>Датчик</td><td>Температура</td></tr></thead><tbody>';
+      var html = "<h3>"+title+"</h3>";
+      html += '<table class="tbl"><thead><tr><th>Датчик</th><th>Температура</th></tr></thead><tbody>';
       for (var i = 0, len = inp.length; i < len; ++i) {
           html += '<tr>';
           if (i < 4) 
@@ -212,7 +222,7 @@ function drawAirHumChart(inp)   {
                       2]);
 
     var options = {
-      title: "Текущая температура воздуха",
+      title: title,
       width: 800,
       height: 400,
       bar: {groupWidth: "75%"},
@@ -232,8 +242,12 @@ function drawAirHumChart(inp)   {
   }}
 
   function drawSoilHumChart(inp){
+    if (!inp)
+      return
+    title = "Текущая влажность почвы";
     if (table_view){
-      var html = '<table class="tbl"><thead><tr><td>Датчик</td><td>Влажность</td></tr></thead><tbody>';
+      var html = "<h3>"+title+"</h3>";
+      html += '<table class="tbl"><thead><tr><th>Датчик</th><th>Влажность</th></tr></thead><tbody>';
       for (var i = 0, len = inp.length; i < len; ++i) {
           html += '<tr>';
           if (i < 6) 
@@ -267,7 +281,7 @@ function drawAirHumChart(inp)   {
                       2]);
 
     var options = {
-      title: "Текущая влажность почвы",
+      title: title,
       width: 1000,
       height: 400,
       bar: {groupWidth: "75%"},
@@ -287,8 +301,11 @@ function drawAirHumChart(inp)   {
 }}
 
 function drawDynChart(num, arr, title, inp)   {
+    if (!inp)
+      return
     if (table_view){
-      var html = '<table class="tbl"><thead><tr><td>'+arr[0][0]+'</td><td>'+arr[0][1]+'</td></tr></thead><tbody>';
+      var html = "<h3>"+title+"</h3>";
+      html += '<table class="tbl"><thead><tr><th>'+arr[0][0]+'</th><th>'+arr[0][1]+'</th></tr></thead><tbody>';
       for (var i = 0, len = inp.length; i < len; ++i) {
           html += '<tr>';
           html += '<td>' + inp[i][0] + '</td>'

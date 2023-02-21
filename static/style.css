@@ -88,18 +88,25 @@
 .tbl {  
     width: 800px;
 	margin-bottom: 20px;
-	border: 1px solid #dddddd;
+	border: 1px solid #eee;
 	border-collapse: collapse; 
 }
-.tblth {
+.tbl th {
 	font-weight: bold;
 	padding: 5px;
 	background: #efefef;
 	border: 1px solid #dddddd;
 }
 .tbl td {
-	border: 1px solid #dddddd;
-	padding: 5px;
+	padding: 5px 10px;
+	border: 1px solid #eee;
+	text-align: left;
+}
+.tbl tbody tr:nth-child(odd){
+	background: #fff;
+}
+.tbl tbody tr:nth-child(even){
+	background: #F7F7F7;
 }
 
 
@@ -141,4 +148,9 @@ input.switch {
 form dl dt {
     margin-top: 20px;
     margin-bottom: 10px;
+}
+
+.extra {
+    font-size: 20px;
+    color: red;
 }
