@@ -15,6 +15,15 @@
 - Реализация адаптивного интерфейса
 
 ---
+![image](https://github.com/user-attachments/assets/bda668a2-a4ed-4e42-8c1a-bf5e052b1d98)
+![image](https://github.com/user-attachments/assets/4c1847d4-84fb-4007-8d63-d18855f41ed3)
+![image](https://github.com/user-attachments/assets/495e1c56-7e1b-4f18-9546-cf0eaff2c687)
+![image](https://github.com/user-attachments/assets/b29fbc5b-e15c-4c38-a58a-409506f74f09)
+![image](https://github.com/user-attachments/assets/524db65b-37e6-4806-96a2-bf3cfcd438a4)
+![image](https://github.com/user-attachments/assets/2784836c-57ef-4242-b7da-c9bcf1cc672e)
+![image](https://github.com/user-attachments/assets/8ba24921-18b8-452b-b340-eba5b5b85dc6)
+
+
 
 ## 🧰 Используемые технологии
 
